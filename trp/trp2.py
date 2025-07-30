@@ -263,6 +263,7 @@ class TPointSchema(BaseSchema):
 class TGeometry():
     bounding_box: TBoundingBox
     polygon: List[TPoint]
+    rotation_angle: Optional[float] = None
 
     def ratio(self, doc_width=None, doc_height=None):
         self.bounding_box.ratio(doc_width=doc_width, doc_height=doc_height)
@@ -280,13 +281,12 @@ class TGeometry():
 class TGeometrySchema(BaseSchema):
     bounding_box = m.fields.Nested(TBoundingBoxSchema, data_key="BoundingBox", required=False, allow_none=False)
     polygon = m.fields.List(m.fields.Nested(TPointSchema), data_key="Polygon", required=False, allow_none=False)
-
+    rotation_angle = m.fields.Float(data_key="RotationAngle", required=False)
+    
     @post_load
     def make_tgeometry(self, data, **kwargs):
         return TGeometry(**data)
 
-    class Meta:
-        unknown = m.INCLUDE
 
 @dataclass(eq=True, init=True, repr=True)
 class TQuery:
