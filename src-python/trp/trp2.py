@@ -285,6 +285,8 @@ class TGeometrySchema(BaseSchema):
     def make_tgeometry(self, data, **kwargs):
         return TGeometry(**data)
 
+    class Meta:
+        unknown = m.INCLUDE
 
 @dataclass(eq=True, init=True, repr=True)
 class TQuery:
